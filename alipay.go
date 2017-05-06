@@ -35,7 +35,11 @@ func init() {
 
 func GetTransfer(c string) string {
 
-	ctoken := c[strings.Index(c, "ctoken="):]
+	ctokenIndex := strings.Index(c, "ctoken=")
+	if ctokenIndex < 0 {
+		return ""
+	}
+	ctoken := c[ctokenIndex:]
 	ctoken = ctoken[:strings.IndexByte(ctoken, ';')]
 	nurl := url + ctoken
 	nurl = nurl + `&t=` + fmt.Sprint(time.Now().Unix()*1000)
