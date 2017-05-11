@@ -42,6 +42,35 @@ func HttpSetup() {
 		}
 	})
 
+	http.HandleFunc("/check", func(w http.ResponseWriter, r *http.Request) {
+		tradeNo := r.URL.Query().Get("tradeno")
+		if len(tradeNo) != 6 {
+			w.Write([]byte("tradeno error"))
+			w.WriteHeader(302)
+			return
+		}
+
+		for _, v := range TransferMap {
+			if v.TradeNo[len(v.TradeNo)-6:] == tradeNo {
+				//time out
+				if time.Now().Sub(v.Time) < time.Minute*5 {
+					w.Write([]byte("time out"))
+					//has checked
+				} else if v.Examed {
+					w.Write([]byte("checked"))
+					//normal
+				} else {
+					v.Examed = true
+					w.Write([]byte(fmt.Sprint(v.Amount)))
+				}
+				return
+			}
+		}
+
+		w.Write([]byte("No result"))
+
+	})
+
 	http.HandleFunc("/exam", func(w http.ResponseWriter, r *http.Request) {
 		tel := r.URL.Query().Get("tel")
 		email := r.URL.Query().Get("email")
@@ -92,6 +121,7 @@ func HttpSetup() {
 
 		w.Write([]byte("No result!"))
 	})
+
 	go http.ListenAndServe(":2048", nil)
 }
 
