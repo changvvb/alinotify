@@ -53,7 +53,7 @@ func HttpSetup() {
 		for _, v := range TransferMap {
 			if v.TradeNo[len(v.TradeNo)-6:] == tradeNo {
 				//time out
-				if time.Now().Sub(v.Time) < time.Minute*5 {
+				if time.Now().Sub(v.Time) > time.Minute*5 {
 					w.Write([]byte("time out"))
 					//has checked
 				} else if v.Examed {
