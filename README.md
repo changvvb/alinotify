@@ -22,6 +22,6 @@ $ alinotify
 ```
 
 ### 5.打开浏览其 https://my.alipay.com 登陆后，获得请求头中的cookies(许多cookie!)复制
-### 6.打开浏览器 127.0.0.1:2048/setcookie ,将复制到的cookies粘贴提交
-### 7.交易后到 127.0.0.1:2048/exam?tel=<电话>&email=< Email> 查看
+### 6.打开浏览器 http://127.0.0.1:2048/setcookie ,将复制到的cookies粘贴提交
+### 7.交易后到 http://127.0.0.1:2048/exam?tel=<电话>&email=< Email> 查看
 

@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/axgle/mahonia"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os/exec"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/axgle/mahonia"
 )
 
 type Transfer struct {
@@ -35,35 +38,35 @@ func init() {
 
 func GetTransfer(c string) string {
 
-	ctokenIndex := strings.Index(c, "ctoken=")
-	if ctokenIndex < 0 {
-		return ""
-	}
-	ctoken := c[ctokenIndex:]
-	ctoken = ctoken[:strings.IndexByte(ctoken, ';')]
-	nurl := url + ctoken
-	nurl = nurl + `&t=` + fmt.Sprint(time.Now().Unix()*1000)
-
-	cmd := exec.Command("curl", "--cookie", `"`+c+`"`, nurl)
-
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Println(err)
-	}
+	// ctokenIndex := strings.Index(c, "ctoken=")
+	// if ctokenIndex < 0 {
+	//     return ""
+	// }
+	// ctoken := c[ctokenIndex:]
+	// ctoken = ctoken[:strings.IndexByte(ctoken, ';')]
+	// nurl := url + ctoken
+	// nurl = nurl + `&t=` + fmt.Sprint(time.Now().Unix()*1000)
+	//
+	// cmd := exec.Command("curl", "--cookie", `"`+c+`"`, nurl)
+	//
+	// output, err := cmd.CombinedOutput()
+	// if err != nil {
+	//     log.Println(err)
+	// }
 
 	//http request by library
-	/*
-		client := http.Client{}
-		req, err := http.NewRequest(http.MethodGet, nurl, nil)
-		req.Header.Set("Cookie", c)
-		fmt.Println(reqd99KA19kEo7Y8lDbvz3oglHStg.Cookies())
-		resp, err := client.Do(req)
-		if err != nil {
-			log.Println(err)
-			return ""
-		}
-		output, err := ioutil.ReadAll(resp.Body)
-	*/
+
+	client := http.Client{}
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req.Header.Set("Cookie", c)
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36")
+	// fmt.Println(req.Cookies())
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Println(err)
+		return ""
+	}
+	output, err := ioutil.ReadAll(resp.Body)
 
 	// fmt.Println(string(output))
 

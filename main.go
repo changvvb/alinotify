@@ -27,11 +27,15 @@ func HttpSetup() {
 	http.HandleFunc("/setcookie", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			b := []byte(`
-				<html>
-				<body>
-				<form method="POST" target="/setcookie"> <input type=text name="cookies"/> <button type=submit />  </form>
-				</body>
-				</html>
+			<html>
+			<body>
+			<form method="POST" target="/setcookie"> 
+			<p>Input Cookie</p>
+			<input type=text name="cookies"/> 
+			<button type=submit> submit </button> 
+			</form>
+			</body>
+			</html>
 			`)
 			w.Write(b)
 
